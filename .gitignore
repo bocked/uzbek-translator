@@ -1,0 +1,27 @@
+# ============================================================
+#  Shaxsiy ma'lumotlar — OMMAVIY repoga HECH QACHON yuborilmaydi
+#  (ism, pasport seriyasi, tug'ilgan sana, maosh, telefon raqamlari)
+# ============================================================
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Operatsion tizim / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Maxfiy fayllar
+.env
+*.pem
+*.key

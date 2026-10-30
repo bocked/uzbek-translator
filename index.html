@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Т-6 Иш вақтини ҳисобга олиш варақаси</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: linear-gradient(135deg, #e8edf5 0%, #d0d9e8 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(31, 73, 125, 0.2);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1F497D 0%, #2a5a9a 50%, #1F497D 100%);
+            padding: 50px 60px 40px;
+            text-align: center;
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ffd700, #ffaa00, #ffd700);
+        }
+        .header .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #ffd700;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+        .header h1 span {
+            color: #ffd700;
+        }
+        .header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content */
+        .content {
+            padding: 50px 60px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            background: #f8f9fb;
+            border: 1px solid #e8ecf2;
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(31, 73, 125, 0.1);
+        }
+        .feature-card .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1F497D, #3a7bc8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            font-size: 20px;
+        }
+        .feature-card h3 {
+            color: #1F497D;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: #5a6a7e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Info boxes */
+        .info-section {
+            margin-bottom: 36px;
+        }
+        .info-section h2 {
+            color: #1F497D;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ffd700;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+        }
+        .info-item .code {
+            background: #1F497D;
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            min-width: 32px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .info-item .desc {
+            color: #3a4a5e;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .columns-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px 20px;
+            list-style: none;
+        }
+        .columns-list li {
+            color: #3a4a5e;
+            font-size: 13px;
+            padding: 4px 0 4px 20px;
+            position: relative;
+        }
+        .columns-list li::before {
+            content: '>';
+            color: #ffd700;
+            font-weight: 700;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Download section */
+        .download-section {
+            background: linear-gradient(135deg, #1F497D 0%, #2a5a9a 100%);
+            border-radius: 14px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .download-section h2 {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .download-section p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #ffd700;
+            color: #1F497D;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 16px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+        }
+        .download-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        .download-info {
+            margin-top: 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 24px 60px;
+            border-top: 1px solid #e8ecf2;
+            text-align: center;
+            color: #8a9aae;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 20px 12px; }
+            .header { padding: 30px 24px; }
+            .header h1 { font-size: 24px; }
+            .content { padding: 30px 24px; }
+            .features { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .columns-list { grid-template-columns: 1fr 1fr; }
+            .download-section { padding: 30px 20px; }
+            .footer { padding: 20px 24px; }
+        }
+        @media (max-width: 480px) {
+            .columns-list { grid-template-columns: 1fr; }
+            .download-btn { font-size: 16px; padding: 14px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="badge">Т-6 шакли</div>
+        <h1>Иш вақтини ҳисобга олиш <span>ВАРАҚАСИ</span></h1>
+        <p>Ўзбекистон Республикаси стандартига мувофиқ профессионал Excel табель — барча зарур формулалар ва автоматик ҳисоб-китоблар билан</p>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+        <!-- Features -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="icon">📋</div>
+                <h3>2 та варақ</h3>
+                <p>Титул ва шартли белгилар + Т-6 табель. Барча маълумотлар бир файлда.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔄</div>
+                <h3>Динамик сарлавҳа</h3>
+                <p>Ой ва Йилни танлаш билан сарлавҳа автоматик янгиланади.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>50 та устун</h3>
+                <p>A дан AX гача — №, ФИШ, 31 кун, иш кунлари, келмаган кунлар, ишлаб берган вақт ва бошқалар.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>Автоматик формулалар</h3>
+                <p>Ходим исмини киритишингиз билан барча ҳисоб-китоблар автоматик ишлайди.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔴</div>
+                <h3>Ходим бўшатиш</h3>
+                <p>AX устунида статусни "Ишдан бўшатилган" қилиб белгиланг — қатор қизил рангга ўтади.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📥</div>
+                <h3>Танлаш рўйхатлари</h3>
+                <p>Ой, Йил, кунлик белгилар ва ходим ҳолати учун қулай dropdown рўйхатлар.</p>
+            </div>
+        </div>
+
+        <!-- Shartli belgilar -->
+        <div class="info-section">
+            <h2>ШАРТЛИ БЕЛГИЛАР</h2>
+            <div class="info-grid">
+                <div class="info-item"><div class="code">Д</div><div class="desc">Дам олиш ва байрам кунлари</div></div>
+                <div class="info-item"><div class="code">Қ</div><div class="desc">Қонун бўйича рухсат этилган кунлар</div></div>
+                <div class="info-item"><div class="code">Х</div><div class="desc">Хизмат сафари</div></div>
+                <div class="info-item"><div class="code">Ҳ</div><div class="desc">Навбатдаги ва қўшимча таътиллар</div></div>
+                <div class="info-item"><div class="code">М</div><div class="desc">Ишга яроқсиз (касаллик) кунлар</div></div>
+                <div class="info-item"><div class="code">Т</div><div class="desc">Ҳомиладорлик таътили</div></div>
+                <div class="info-item"><div class="code">Э</div><div class="desc">Эмизиклик аёллар имтиёзли вақти</div></div>
+                <div class="info-item"><div class="code">Ё</div><div class="desc">18 ёшга тўлмаган ўсмирлар имтиёзли вақти</div></div>
+                <div class="info-item"><div class="code">И</div><div class="desc">Зарарли шароитда ишлаганлик учун имтиёз</div></div>
+                <div class="info-item"><div class="code">С</div><div class="desc">Туриб қолиш вақти (смена / корхона айби)</div></div>
+                <div class="info-item"><div class="code">К</div><div class="desc">Сабабсиз келмаган / ташқари иш вақти</div></div>
+                <div class="info-item"><div class="code">Б</div><div class="desc">Бошқа сабабларга кўра келмаган</div></div>
+                <div class="info-item"><div class="code">Р</div><div class="desc">Раҳбарият рухсати билан келмаган</div></div>
+                <div class="info-item" style="grid-column: 1/-1; justify-content: center; gap: 14px;">
+                    <span style="color:#5a6a7e; font-size:13px;">Шунингдек, ҳар бир кунлик катакчага иш соатлари (1–24) киритилиши мумкин</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ustunlar -->
+        <div class="info-section">
+            <h2>ЖАДВАЛ УСТУНЛАРИ (A–AX)</h2>
+            <ul class="columns-list">
+                <li><strong>A</strong> — № (автоматик)</li>
+                <li><strong>B</strong> — ФИШ</li>
+                <li><strong>C</strong> — Табель рақами</li>
+                <li><strong>D</strong> — Лавозими</li>
+                <li><strong>E–AI</strong> — 1–31 кунлар</li>
+                <li><strong>AJ</strong> — Ҳақиқатда ишланган кунлар</li>
+                <li><strong>AK</strong> — Смена туриб қолиш</li>
+                <li><strong>AL</strong> — Таътил (Ҳ)</li>
+                <li><strong>AM</strong> — Касаллик (М)</li>
+                <li><strong>AN</strong> — Ҳомиладорлик (Т)</li>
+                <li><strong>AO</strong> — Бошқа сабаб (Б)</li>
+                <li><strong>AP</strong> — Раҳбарият рухсати (Р)</li>
+                <li><strong>AQ</strong> — Сабабсиз (К)</li>
+                <li><strong>AR</strong> — Дам олиш (Д)</li>
+                <li><strong>AS</strong> — Доимий туриб қолиш</li>
+                <li><strong>AT</strong> — Вақтдан илгари кетиш</li>
+                <li><strong>AU</strong> — Жами ишлаб берган вақт</li>
+                <li><strong>AV</strong> — Нормадан ташқари</li>
+                <li><strong>AW</strong> — Тунги соатлар</li>
+                <li><strong>AX</strong> — Ходим ҳолати</li>
+            </ul>
+        </div>
+
+        <!-- Download -->
+        <div class="download-section">
+            <h2>📥 Excel файлни юклаб олиш</h2>
+            <p>Т-6 шаклидаги тўлиқ функционал табель. Барча формулалар, шартли белгилар ва дизайн тайёр.</p>
+            <a href="Т-6%20Иш%20вақтини%20ҳисобга%20олиш%20варақаси.xlsx" class="download-btn" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Yuklab olish (.xlsx)
+            </a>
+            <div class="download-info">Ўлчами: ~16 KB | Формат: Microsoft Excel (.xlsx)</div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        Т-6 шакли • Иш вақтини ҳисобга олиш варақаси • Ўзбекистон Республикаси стандарти
+    </div>
+</div>
+
+</body>
+</html>
