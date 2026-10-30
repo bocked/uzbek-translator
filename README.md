@@ -1,37 +1,82 @@
-# Т-6 Иш вақтини ҳисобга олиш варақаси
+# Yangi o'zbek alifbosi — tarjimon va fayl o'giruvchi
 
-Ўзбекистон Республикаси стандартига мувофиқ **Т-6 шаклидаги** иш вақтини ҳисобга олиш
-варақасини яратувчи веб-илова.
+Matn, **Word (.docx)** va **Excel (.xlsx)** fayllarini yangi o'zbek alifbosiga
+o'giradigan veb-ilova. Hammasi brauzerda ishlaydi — fayllar hech qanday serverga
+yuborilmaydi.
 
-## Нима қилади
+**Jonli:** https://bocked.github.io/uzbek-translator/
 
-- 50 та устун (A–AX): №, ФИШ, табель рақами, лавозим, 1–31 кунлар ва якуний ҳисоб-китоблар
-- Ой ва йилни танлаш — сарлавҳа автоматик янгиланади
-- Шартли белгилар (Д, Қ, Х, Ҳ, М, Т, Э, Ё, И, С, К, Б, Р) учун қулай dropdown рўйхатлар
-- «Ишдан бўшатилган» ходим қатори автоматик қизил рангга ўтади
-- Тайёр `.xlsx` файлни юклаб олиш
+## O'girish qoidalari
 
-## GitHub Pages'да ишга тушириш
+| Eski yozuv | Yangi alifbo | Misol |
+|---|---|---|
+| Oʻ / oʻ | Ö / ö | Oʻzbekiston → Özbekiston |
+| Gʻ / gʻ | Ğ / ğ | bogʻ → boğ |
+| Sh / sh | Ş / ş | shahar → şahar |
+| Ch / ch | Ç / ç | choy → çoy |
+| Ng / ng | Ñ / ñ | tong → toñ |
 
-1. Репозиторийга киринг → **Settings** → **Pages**
+Uch yo'nalish qo'llab-quvvatlanadi:
+
+- **Lotin → Yangi** — eski lotin yozuvini yangi alifboga o'tkazadi
+- **Kirill → Yangi** — kirill matnini avval lotinga, so'ng yangi alifboga o'tkazadi
+- **Yangi → Lotin** — teskari o'girish
+
+## Fayllar bilan ishlash
+
+`.docx` va `.xlsx` aslida ZIP arxivdir. Ilova arxivni ochib, ichidagi XML
+qismlarini (`word/document.xml`, `xl/sharedStrings.xml`, ish varoqlari) topadi,
+faqat **matn tugunlarini** o'zgartiradi va qayta qadoqlaydi.
+
+Saqlanadi: shrift, rang, jadval tuzilishi, rasmlar, formulalar, uslublar.
+
+`sh`/`ch` kabi harflar Word'da alohida run'larga bo'lingan bo'lishi mumkin —
+ilova ularni butun paragraf bo'yicha birlashtirib o'giradi, shuning uchun
+bo'lingan holatlarda ham to'g'ri ishlaydi.
+
+## Loyiha tuzilishi
+
+| Fayl | Vazifasi |
+|---|---|
+| `index.html` | Sahifa tuzilishi va uslublari |
+| `app.js` | Interfeys mantig'i |
+| `alifbo-core.js` | O'girish qoidalari (sof mantiq, tashqi bog'liqliksiz) |
+| `zip-lite.js` | ZIP o'qish/yozish (`DecompressionStream` asosida) |
+| `convert.js` | `.docx` / `.xlsx` o'girish quvuri |
+| `excel_tekshiruv.py` | Excel ma'lumotlarini tekshirish skripti (yordamchi) |
+
+Tashqi kutubxona **yo'q** — na CDN, na npm. Shu sababli sayt oflayn ham ishlaydi.
+
+## GitHub Pages'da joylashtirish
+
+1. **Settings** → **Pages**
 2. **Source**: `Deploy from a branch`
 3. **Branch**: `main` · **Folder**: `/ (root)`
 4. **Save**
 
-Бир-икки дақиқадан сўнг илова мана шу манзилда очилади:
+`index.html` ildizda bo'lgani uchun qo'shimcha sozlash kerak emas.
+`.nojekyll` fayli Jekyll qayta ishlashini o'chirib qo'yadi.
 
+## Yangilash
+
+```powershell
+.\deploy.ps1 -Owner <username> -Token <ghp_...>
 ```
-https://<username>.github.io/<repository-name>/
-```
 
-`index.html` репозиторий илдизида тургани учун қўшимча созлаш керак эмас.
+Tokenni faylga yozmang va repoga qo'shmang.
 
-## Муҳим: шахсий маълумотлар
+## Muhim: shaxsiy ma'lumotlar
 
-Бу репозиторийда **ошкор этилмайди**:
+`.gitignore` quyidagi fayllarni bloklaydi:
 
-- `malumotlar.xlsx` — ходимларнинг исми, паспорт серияси, туғилган санаси, маоши, телефони
-- `nomuvofiqliklar_hisoboti.xlsx` — шу маълумотларнинг таҳлили
+- `malumotlar.xlsx` — ism, pasport seriyasi, tug'ilgan sana, maosh, telefon
+- `nomuvofiqliklar_hisobati.xlsx` — shu ma'lumotlarning tahlili
 
-`.gitignore` бу файлларни блоклайди. Уларни GitHub'га юклаш — шахсий маълумотларни
-оммавий равишда эълон қилиш ҳисобланади.
+Bu fayllar repoga **hech qachon** qo'shilmasligi kerak.
+
+## Cheklovlar
+
+- O'girish lug'at emas, qoidalar asosida ishlaydi — inglizcha `ship` ham `şip` bo'ladi
+- Eski `.doc` / `.xls` (binar) formatlari qo'llab-quvvatlanmaydi
+- Shifrlangan va ZIP64 arxivlar ochilmaydi
+- Natijani har doim ko'zdan kechirib chiqish tavsiya etiladi
