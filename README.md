@@ -57,6 +57,35 @@ Tashqi kutubxona **yo'q** — na CDN, na npm. Shu sababli sayt oflayn ham ishlay
 `index.html` ildizda bo'lgani uchun qo'shimcha sozlash kerak emas.
 `.nojekyll` fayli Jekyll qayta ishlashini o'chirib qo'yadi.
 
+### O'z domenini ulash
+
+Domen Cloudflare'da turgan bo'lsa ham, GitHub Pages bilan bemalol ishlaydi —
+Cloudflare faqat DNS vazifasini bajaradi.
+
+**1. Repoga `CNAME` fayl qo'shing** (faqat domen nomi, boshqa hech narsa):
+
+```
+example.uz
+```
+
+**2. Cloudflare → DNS → Records** da quyidagilarni qo'shing:
+
+| Type | Name | Content | Proxy |
+|---|---|---|---|
+| CNAME | `www` | `bocked.github.io` | **DNS only** (kulrang bulut) |
+| CNAME | `@` | `bocked.github.io` | **DNS only** (kulrang bulut) |
+
+`@` uchun CNAME Cloudflare'ning "CNAME flattening" xususiyati tufayli ishlaydi.
+
+**3. GitHub → Settings → Pages → Custom domain** ga domenni yozing va **Save**.
+Tekshiruv o'tgach **Enforce HTTPS** ni yoqing.
+
+> ⚠️ **Muhim:** Cloudflare proxy (to'q sariq bulut) **o'chirilgan** bo'lishi shart.
+> Aks holda GitHub SSL sertifikat chiqara olmaydi va sayt "too many redirects"
+> xatosini beradi. Sertifikat chiqqandan keyin ham uni o'chirib qo'yish tavsiya etiladi.
+
+DNS o'zgarishi 5 daqiqadan 24 soatgacha kuchga kirishi mumkin.
+
 ## Yangilash
 
 ```powershell
