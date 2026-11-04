@@ -4,7 +4,9 @@ Matn, **Word (.docx)** va **Excel (.xlsx)** fayllarini yangi o'zbek alifbosiga
 o'giradigan veb-ilova. Hammasi brauzerda ishlaydi — fayllar hech qanday serverga
 yuborilmaydi.
 
-**Jonli:** https://bocked.github.io/uzbek-translator/
+**Jonli sayt:** https://yerlikoglon.uz
+
+Zaxira nusxa: https://bocked.github.io/uzbek-translator/
 
 ## O'girish qoidalari
 
@@ -47,44 +49,25 @@ bo'lingan holatlarda ham to'g'ri ishlaydi.
 
 Tashqi kutubxona **yo'q** — na CDN, na npm. Shu sababli sayt oflayn ham ishlaydi.
 
-## GitHub Pages'da joylashtirish
+## Joylashtirish (hosting)
 
-1. **Settings** → **Pages**
-2. **Source**: `Deploy from a branch`
-3. **Branch**: `main` · **Folder**: `/ (root)`
-4. **Save**
+Sayt ikki joyda turadi:
 
-`index.html` ildizda bo'lgani uchun qo'shimcha sozlash kerak emas.
-`.nojekyll` fayli Jekyll qayta ishlashini o'chirib qo'yadi.
+| Joy | Manzil | Vazifasi |
+|---|---|---|
+| Cloudflare Pages | https://yerlikoglon.uz | Asosiy sayt |
+| GitHub Pages | https://bocked.github.io/uzbek-translator/ | Zaxira nusxa |
 
-### O'z domenini ulash
+Ikkalasi ham **statik** — server kodi, ma'lumotlar bazasi yoki hisob (login)
+kerak emas. Kelgan matn va fayllar hech qayerga saqlanmaydi.
 
-Domen Cloudflare'da turgan bo'lsa ham, GitHub Pages bilan bemalol ishlaydi —
-Cloudflare faqat DNS vazifasini bajaradi.
+Sayt fayllari ildizda yotadi, qo'shimcha build qadami yo'q:
 
-**1. Repoga `CNAME` fayl qo'shing** (faqat domen nomi, boshqa hech narsa):
+- Cloudflare Pages'da loyiha ildizga to'g'ridan-to'g'ri yuklanadi (build buyrug'i yo'q)
+- GitHub Pages `main` branchining ildizidan o'qiydi (`.nojekyll` Jekyll'ni o'chiradi)
 
-```
-example.uz
-```
-
-**2. Cloudflare → DNS → Records** da quyidagilarni qo'shing:
-
-| Type | Name | Content | Proxy |
-|---|---|---|---|
-| CNAME | `www` | `bocked.github.io` | **DNS only** (kulrang bulut) |
-| CNAME | `@` | `bocked.github.io` | **DNS only** (kulrang bulut) |
-
-`@` uchun CNAME Cloudflare'ning "CNAME flattening" xususiyati tufayli ishlaydi.
-
-**3. GitHub → Settings → Pages → Custom domain** ga domenni yozing va **Save**.
-Tekshiruv o'tgach **Enforce HTTPS** ni yoqing.
-
-> ⚠️ **Muhim:** Cloudflare proxy (to'q sariq bulut) **o'chirilgan** bo'lishi shart.
-> Aks holda GitHub SSL sertifikat chiqara olmaydi va sayt "too many redirects"
-> xatosini beradi. Sertifikat chiqqandan keyin ham uni o'chirib qo'yish tavsiya etiladi.
-
-DNS o'zgarishi 5 daqiqadan 24 soatgacha kuchga kirishi mumkin.
+`index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js` — shu
+beshta fayl saytning o'zi.
 
 ## Yangilash
 
