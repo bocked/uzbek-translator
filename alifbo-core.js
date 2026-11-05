@@ -8,7 +8,6 @@
      Gʻ / gʻ  ->  Ğ / ğ
      Sh / sh  ->  Ş / ş
      Ch / ch  ->  Ç / ç
-     Ng / ng  ->  Ñ / ñ   (ixtiyoriy)
 
    Rejimlar:
      'lotin'  — eski lotin  -> yangi lotin
@@ -21,35 +20,26 @@
     /* --- apostrof variantlari: ' ’ ‘ ʻ ʼ ` ´ ′ --------------------------- */
     var APOS = "['\\u2018\\u2019\\u02BB\\u02BC\\u0060\\u00B4\\u2032]";
 
-    var LOTIN_RE_CACHE = {};
-
-    function buildLotinRe(useNg) {
-        var key = useNg ? '1' : '0';
-        if (LOTIN_RE_CACHE[key]) return LOTIN_RE_CACHE[key];
-        var parts = [
-            '(?<oa>[oO])' + APOS,
-            '(?<ga>[gG])' + APOS,
-            '(?<sh>[sS])(?<h>[hH])',
-            '(?<ch>[cC])(?<h2>[hH])'
-        ];
-        if (useNg) parts.push('(?<ng>[nN])(?<g2>[gG])');
-        var re = new RegExp(parts.join('|'), 'g');
-        LOTIN_RE_CACHE[key] = re;
-        return re;
-    }
+    /* ng -> ñ qoidasi ataylab qo'shilmagan: foydalanuvchi talabiga ko'ra
+       "ng" harf birikmasi o'zgartirilmaydi (tong -> tong). */
+    var LOTIN_RE = new RegExp([
+        '(?<oa>[oO])' + APOS,
+        '(?<ga>[gG])' + APOS,
+        '(?<sh>[sS])(?<h>[hH])',
+        '(?<ch>[cC])(?<h2>[hH])'
+    ].join('|'), 'g');
 
     function lotinReplace(groups) {
         if (groups.oa !== undefined) return groups.oa === 'O' ? '\u00D6' : '\u00F6'; // Ö ö
         if (groups.ga !== undefined) return groups.ga === 'G' ? '\u011E' : '\u011F'; // Ğ ğ
         if (groups.sh !== undefined) return groups.sh === 'S' ? '\u015E' : '\u015F'; // Ş ş
         if (groups.ch !== undefined) return groups.ch === 'C' ? '\u00C7' : '\u00E7'; // Ç ç
-        if (groups.ng !== undefined) return groups.ng === 'N' ? '\u00D1' : '\u00F1'; // Ñ ñ
         return '';
     }
 
     /* --- eski lotin -> yangi lotin ---------------------------------------- */
-    function lotinPass(text, useNg) {
-        var re = buildLotinRe(useNg !== false);
+    function lotinPass(text) {
+        var re = LOTIN_RE;
         re.lastIndex = 0;
 
         var out = '';
@@ -166,15 +156,14 @@
     /* --- asosiy API -------------------------------------------------------- */
     function convertWithMap(text, mode, opts) {
         opts = opts || {};
-        var useNg = opts.ng !== false;
 
         if (mode === 'kirill') {
             var c = cyrPass(text);
-            var l = lotinPass(c.out, useNg);
+            var l = lotinPass(c.out);
             return compose(c, l);
         }
         if (mode === 'orqaga') return revPass(text);
-        return lotinPass(text, useNg);
+        return lotinPass(text);
     }
 
     function convertPlain(text, mode, opts) {
@@ -307,7 +296,6 @@
 
     var api = {
         APOS: APOS,
-        buildLotinRe: buildLotinRe,
         lotinPass: lotinPass,
         revPass: revPass,
         cyrPass: cyrPass,

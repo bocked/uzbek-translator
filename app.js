@@ -10,7 +10,7 @@
         'tong va oqshom, bog\u02BB va g\u02BBalaba — bularning barchasi shoshilinch ' +
         'chora-tadbirlarni talab qiladi.';
 
-    var state = { mode: 'lotin', ng: true, keepLinks: true };
+    var state = { mode: 'lotin', keepLinks: true };
     var results = [];
     var pending = 0;
     var toastTimer = null;
@@ -20,7 +20,6 @@
         var src = $('src');
         var dst = $('dst');
         var out = AlifboCore.convertTextSafe(src.value, state.mode, {
-            ng: state.ng,
             keepLinks: state.keepLinks
         });
 
@@ -32,8 +31,10 @@
         $('stats').innerHTML =
             '<b>' + out.length + '</b> belgi · <b>' + words + '</b> so\u02BBz · ' +
             (changed
-                ? '<span style="color:#0f9d58;font-weight:600">o\u02BBgirildi</span>'
+                ? '<span class="ok">o\u02BBgirildi</span>'
                 : 'o\u02BBzgarish yo\u02BBq');
+
+        $('srcCount').textContent = src.value.length + ' belgi';
 
         $('outHint').textContent = state.mode === 'orqaga' ? 'eski lotin' : 'yangi alifbo';
     }
@@ -119,8 +120,8 @@
 
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'btn';
-        btn.textContent = '\u2B07 Yuklab olish';
+        btn.className = 'btn sm';
+        btn.innerHTML = '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg> Yuklab olish';
         btn.addEventListener('click', function () {
             download(blob, outName);
             toast('Yuklab olinmoqda: ' + outName);
@@ -136,10 +137,17 @@
     }
 
     /* ------------------------------------------------------ faylni o'girish */
+    function updateFileFoot() {
+        $('fileActions').hidden = results.length === 0;
+        $('zipLabel').textContent = results.length
+            ? 'Hammasini yuklab olish (' + results.length + ' fayl)'
+            : 'Hammasini yuklab olish (.zip)';
+    }
+
     function addFile(file) {
         var ref = createRow(file.name, file.size);
 
-        return Convert.convertBlob(file, { mode: state.mode, ng: state.ng })
+        return Convert.convertBlob(file, { mode: state.mode })
             .then(function (res) {
                 var outName = Convert.outputName(file.name, state.mode);
                 var info = res.changedParts + ' qism o\u02BBzgartirildi';
@@ -152,7 +160,7 @@
                 markError(ref, err && err.message ? err.message : 'Noma\u02BClum xatolik');
             })
             .then(function () {
-                $('fileActions').hidden = results.length === 0;
+                updateFileFoot();
             });
     }
 
@@ -183,11 +191,6 @@
             Array.prototype.forEach.call(this.querySelectorAll('button'), function (b) {
                 b.classList.toggle('active', b === btn);
             });
-            refresh();
-        });
-
-        $('optNg').addEventListener('change', function () {
-            state.ng = this.checked;
             refresh();
         });
 
@@ -279,15 +282,16 @@
         $('clearFiles').addEventListener('click', function () {
             results = [];
             $('fileList').innerHTML = '';
-            $('fileActions').hidden = true;
+            updateFileFoot();
         });
 
         $('zipBtn').addEventListener('click', function () {
             if (!results.length) return;
 
             var btn = this;
+            var label = $('zipLabel');
             btn.disabled = true;
-            btn.textContent = 'Paketlanmoqda…';
+            label.textContent = 'Paketlanmoqda…';
 
             (async function () {
                 try {
@@ -312,7 +316,7 @@
                     toast('Arxivlab bo\u02BBlmadi: ' + (e && e.message ? e.message : e));
                 } finally {
                     btn.disabled = false;
-                    btn.textContent = '\u2B07 Hammasini yuklab olish (.zip)';
+                    updateFileFoot();
                 }
             })();
         });

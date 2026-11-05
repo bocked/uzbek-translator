@@ -16,7 +16,8 @@ Zaxira nusxa: https://bocked.github.io/uzbek-translator/
 | Gʻ / gʻ | Ğ / ğ | bogʻ → boğ |
 | Sh / sh | Ş / ş | shahar → şahar |
 | Ch / ch | Ç / ç | choy → çoy |
-| Ng / ng | Ñ / ñ | tong → toñ |
+
+`ng` harf birikmasi **o'zgartirilmaydi** — `tong → tong`.
 
 Uch yo'nalish qo'llab-quvvatlanadi:
 

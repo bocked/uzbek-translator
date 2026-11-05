@@ -39,9 +39,8 @@
             throw new Error('Bu fayl .docx yoki .xlsx emas (yoki eski .doc / .xls formatida).');
         }
 
-        var ng = opts.ng !== false;
         var mode = opts.mode || 'lotin';
-        var convert = function (s) { return C.convertWithMap(s, mode, { ng: ng }); };
+        var convert = function (s) { return C.convertWithMap(s, mode); };
 
         var changedParts = 0;
 
