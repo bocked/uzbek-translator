@@ -6,10 +6,6 @@
 
     var $ = function (id) { return document.getElementById(id); };
 
-    var SAMPLE = 'O\u02BBzbekiston Respublikasida shahar va qishloqlar, choy va shakar, ' +
-        'tong va oqshom, bog\u02BB va g\u02BBalaba — bularning barchasi shoshilinch ' +
-        'chora-tadbirlarni talab qiladi.';
-
     var state = { mode: 'lotin', keepLinks: true };
     var results = [];
     var pending = 0;
@@ -229,11 +225,6 @@
             $('src').value = '';
             refresh();
             $('src').focus();
-        });
-
-        $('sampleBtn').addEventListener('click', function () {
-            $('src').value = SAMPLE;
-            refresh();
         });
 
         /* --- tablar --- */
