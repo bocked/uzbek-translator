@@ -1,0 +1,7 @@
+# Faqat noto'g'ri variant yo'llar yo'naltiriladi.
+# Asosiy /ai-catalog.json va /llms.txt statik fayl sifatida to'g'ridan-to'g'ri beriladi.
+
+/ai-catalog.json/ /ai-catalog.json 301
+/ai-catalog /.well-known/ai-catalog.json 301
+/llms.txt/ /llms.txt 301
+/.well-known/ai-catalog.json/ /.well-known/ai-catalog.json 301

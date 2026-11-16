@@ -70,6 +70,15 @@ Sayt fayllari ildizda yotadi, qo'shimcha build qadami yo'q:
 `index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js` — shu
 beshta fayl saytning o'zi.
 
+Yordamchi (statik) fayllar:
+
+- `robots.txt`, `sitemap.xml` — qidiruv tizimlari uchun
+- `llms.txt` — AI agentlar uchun qisqa qo'llanma (H1 + havolalar)
+- `ai-catalog.json` va `.well-known/ai-catalog.json` — AI Catalog (ARD) manifesti
+- `_headers` — `Content-Type` va keshlash sarlavhalarini majburlaydi
+- `_redirects` — noto'g'ri variant yo'llarni kanonik manzilga yo'naltiradi
+- `404.html` — mavjud bo'lmagan yo'llar `index.html` o'rniga haqiqiy 404 qaytaradi
+
 ## Yangilash
 
 ```powershell
