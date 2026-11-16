@@ -1,0 +1,38 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Yangi o'zbek alifbosi (yerlikoglon.uz)",
+    "identifier": "did:web:yerlikoglon.uz",
+    "documentationUrl": "https://yerlikoglon.uz/llms.txt"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:yerlikoglon.uz:web:konvertor",
+      "displayName": "Yangi o'zbek alifbosi konvertori",
+      "type": "text/html",
+      "url": "https://yerlikoglon.uz/",
+      "description": "Eski lotin yoki kirill yozuvidagi o'zbek matnini va .docx/.xlsx fayllarini yangi o'zbek alifbosiga (O\u02bb/o\u02bb, Sh/sh, Ch/ch, G\u02bb/g\u02bb) o'giradigan brauzerda ishlaydigan bepul vosita.",
+      "tags": ["uzbek", "alphabet", "transliteration", "converter", "docx", "xlsx"],
+      "representativeQueries": [
+        "o'zbek matnini yangi alifboga o'girib ber",
+        "sh, ch, o', g' harflarini yangi alifbo harflariga almashtir",
+        "Word yoki Excel faylni yangi o'zbek alifbosiga o'tkaz"
+      ]
+    },
+    {
+      "identifier": "urn:air:yerlikoglon.uz:knowledge:llms-txt",
+      "displayName": "Sayt bo'yicha AI qo'llanma (llms.txt)",
+      "type": "text/plain",
+      "url": "https://yerlikoglon.uz/llms.txt",
+      "description": "Sayt imkoniyatlari, o'girish qoidalari va cheklovlari haqida AI agentlar uchun qisqa qo'llanma.",
+      "tags": ["documentation", "llms-txt", "rules"]
+    },
+    {
+      "identifier": "urn:air:yerlikoglon.uz:data:sitemap",
+      "displayName": "Sitemap",
+      "type": "application/xml",
+      "url": "https://yerlikoglon.uz/sitemap.xml",
+      "description": "Saytning indekslanadigan sahifalari ro'yxati."
+    }
+  ]
+}

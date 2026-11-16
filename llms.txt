@@ -1,0 +1,34 @@
+# Yangi o'zbek alifbosi — matn va fayl o'giruvchisi
+
+> yerlikoglon.uz — eski lotin yoki kirill yozuvidagi o'zbek matnini, Word (.docx) va Excel (.xlsx) fayllarini yangi o'zbek alifbosiga (Ö ö, Ş ş, Ç ç, Ğ ğ) o'giradigan bepul veb-vosita. Barcha ishlov brauzerda bajariladi, fayllar serverga yuborilmaydi.
+
+Sayt statik HTML va JavaScript asosida ishlaydi, hisob yaratishni talab qilmaydi. Matn chap maydonga kiritiladi va natija o'ng maydonda darhol ko'rinadi. Fayl rejimida bir nechta `.docx` va `.xlsx` hujjati birga yuklanadi, natija `.zip` arxiv sifatida yuklab olinadi. Hujjat ichidagi shrift, rang, jadval va rasmlar o'zgartirilmaydi — faqat harflar almashtiriladi.
+
+## Asosiy sahifalar
+
+- [Konvertor (asosiy sahifa)](https://yerlikoglon.uz/): matn va fayl o'girish; yo'nalish tanlash — Lotin → Yangi, Kirill → Yangi, Yangi → Lotin.
+- [Zaxira nusxa](https://bocked.github.io/uzbek-translator/): asosiy sayt bilan bir xil imkoniyatlar.
+- [Manba kodi](https://github.com/bocked/uzbek-translator): HTML, CSS va JavaScript fayllari.
+
+## O'girish qoidalari
+
+- `Oʻ / oʻ` → `Ö / ö` — Oʻzbekiston → Özbekiston
+- `Gʻ / gʻ` → `Ğ / ğ` — bogʻ → boğ
+- `Sh / sh` → `Ş / ş` — shahar → şahar
+- `Ch / ch` → `Ç / ç` — choy → çoy
+- Tutuq belgisi (ʼ) va boshqa tinish belgilari o'zgartirilmaydi.
+- `ng` harf birikmasi o'zgartirilmaydi: tong → tong.
+- Kirill → lotin: ў → oʻ, қ → q, ғ → gʻ, ҳ → h. «е, ё, ю, я» soʻz boshida yoki unlidan keyin ye, yo, yu, ya; undoshdan keyin e, o, u, a shaklida yoziladi (елка → yelka, келди → keldi).
+
+## Mashina o'qiydigan resurslar
+
+- [llms.txt](https://yerlikoglon.uz/llms.txt): ushbu fayl — sayt haqida AI agentlar uchun qisqa qo'llanma.
+- [AI Catalog](https://yerlikoglon.uz/.well-known/ai-catalog.json): sayt resurslarining mashina o'qiydigan katalogi (`application/ai-catalog+json`).
+- [Sitemap](https://yerlikoglon.uz/sitemap.xml): indekslanadigan sahifalar ro'yxati.
+- [Robots.txt](https://yerlikoglon.uz/robots.txt): krauvler uchun qoidalar.
+
+## Cheklovlar
+
+- Eski `.doc` va `.xls` formatlari qo'llab-quvvatlanmaydi — avval Word yoki Excel'da `.docx` / `.xlsx` qilib saqlash kerak.
+- O'girish lug'at asosida emas, qoidalar asosida ishlaydi: inglizcha so'zlardagi `sh` / `ch` ham almashtiriladi (ship → şip), shuning uchun aralash tilli matn natijasini ko'zdan kechirish tavsiya etiladi.
+- Matn ham, fayl ham serverga yuborilmaydi; konvertor tarmoqqa murojaat qilmaydi.
