@@ -36,6 +36,7 @@
     var raf = 0;
     var last = 0;
     var resizeTimer = 0;
+    var manual = false;
 
     function rand(a, b) { return a + Math.random() * (b - a); }
     function pick(list) { return list[(Math.random() * list.length) | 0]; }
@@ -330,11 +331,14 @@
         var preview = previewMode();
         if (preview) { applyMode(preview); return; }
 
-        pickMode(function (value) { applyMode(value); });
+        pickMode(function (value) { if (!manual) applyMode(value); });
     }
 
     /* Konsoldan sinash: fxPreview('rain' | 'snow' | 'petal' | 'leaf' | 'none') */
-    window.fxPreview = applyMode;
+    window.fxPreview = function (value) {
+        manual = true;
+        return applyMode(value);
+    };
 
     function schedule(fn) {
         if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 2000 });
