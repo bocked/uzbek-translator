@@ -67,8 +67,9 @@ Sayt fayllari ildizda yotadi, qo'shimcha build qadami yo'q:
 - Cloudflare Pages'da loyiha ildizga to'g'ridan-to'g'ri yuklanadi (build buyrug'i yo'q)
 - GitHub Pages `main` branchining ildizidan o'qiydi (`.nojekyll` Jekyll'ni o'chiradi)
 
-`index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js` — shu
-beshta fayl saytning o'zi.
+`index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js`, `effects.js`
+— shu oltita fayl saytning o'zi. `effects.js` ob-havo va faslga mos fon
+animatsiyasini (qor, yomg'ir, gulbarg, kuzgi barg) canvas'da chizadi.
 
 Yordamchi (statik) fayllar:
 
