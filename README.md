@@ -67,9 +67,10 @@ Sayt fayllari ildizda yotadi, qo'shimcha build qadami yo'q:
 - Cloudflare Pages'da loyiha ildizga to'g'ridan-to'g'ri yuklanadi (build buyrug'i yo'q)
 - GitHub Pages `main` branchining ildizidan o'qiydi (`.nojekyll` Jekyll'ni o'chiradi)
 
-`index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js`, `effects.js`
-— shu oltita fayl saytning o'zi. `effects.js` ob-havo va faslga mos fon
-animatsiyasini (qor, yomg'ir, gulbarg, kuzgi barg) canvas'da chizadi.
+`index.html`, `app.js`, `alifbo-core.js`, `zip-lite.js`, `convert.js`, `effects.js`,
+`visits.js` — shu yettita fayl saytning o'zi. `effects.js` ob-havo va faslga mos
+fon animatsiyasini (qor, yomg'ir, gulbarg, kuzgi barg) canvas'da chizadi,
+`visits.js` esa footer'dagi tashriflar hisoblagichini yangilaydi.
 
 Yordamchi (statik) fayllar:
 
@@ -99,6 +100,20 @@ Sahifani yangilamasdan almashtirish uchun brauzer konsolida:
 ```js
 fxPreview('snow');   // 'rain' | 'snow' | 'petal' | 'leaf' | 'none'
 ```
+
+## Tashriflar hisoblagichi
+
+Footer'da "Tashriflar soni" ko'rsatiladi. Hisob **Abacus**
+(`abacus.jasoncameron.dev`) orqali yuritiladi — bepul, API kalitsiz, CORS ochiq.
+
+- 24 soat ichida birinchi tashrif: `/hit/...` → raqam +1
+- Shu 24 soatdagi keyingi tashriflar: `/get/...` → faqat o'qish
+- Natija `localStorage`da saqlanadi; API javob bermasa oxirgi ma'lum raqam ko'rsatiladi
+- Cookie ishlatilmaydi — faqat `yerlikoglon:visit:v1` va `yerlikoglon:visits:v1`
+- Lokal fayl va preview domenlar hisobga olinmaydi (`visits.js` dagi `HOSTS`)
+
+Nega CounterAPI emas: uning v1 API'si 2026-yil avgustdan yopilgan (HTTP 410),
+v2 esa API kalit talab qiladi — statik saytda kalit ochiq qoladi.
 
 ## Yangilash
 

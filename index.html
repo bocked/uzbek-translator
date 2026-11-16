@@ -345,6 +345,11 @@ footer{
   font-size:13px;color:var(--muted);background:rgba(255,255,255,.6);
 }
 footer b{color:var(--ink-2);font-weight:550}
+footer .visits{
+  margin-top:8px;font-size:12.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+footer .visits b{color:var(--ink-2);font-weight:600}
 
 /* ------------------------------------------------------- fon effektlari */
 .fx-canvas{
@@ -583,7 +588,10 @@ footer b{color:var(--ink-2);font-weight:550}
 </main>
 
 <footer>
-  <b>Yangi o'zbek alifbosi</b> · hammasi brauzerda ishlaydi · fayllar hech qayerga yuborilmaydi
+  <div><b>Yangi o'zbek alifbosi</b> · hammasi brauzerda ishlaydi · fayllar hech qayerga yuborilmaydi</div>
+  <div class="visits" id="visits" hidden title="Har bir tashrifchi 24 soatda bir marta hisoblanadi">
+    Tashriflar soni: <b id="visitCount">—</b>
+  </div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -593,5 +601,6 @@ footer b{color:var(--ink-2);font-weight:550}
 <script src="convert.js"></script>
 <script src="app.js"></script>
 <script src="effects.js"></script>
+<script src="visits.js"></script>
 </body>
 </html>
