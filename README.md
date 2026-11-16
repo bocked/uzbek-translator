@@ -80,6 +80,26 @@ Yordamchi (statik) fayllar:
 - `_redirects` — noto'g'ri variant yo'llarni kanonik manzilga yo'naltiradi
 - `404.html` — mavjud bo'lmagan yo'llar `index.html` o'rniga haqiqiy 404 qaytaradi
 
+## Fon effektlarini sinash
+
+Effekt ob-havo kodi va joriy oyga qarab avtomatik tanlanadi. Istalgan effektni
+qo'lda ko'rish uchun manzilga `?fx=` qo'shing (API'ga so'rov yuborilmaydi,
+keshga yozilmaydi):
+
+| Manzil | Effekt |
+|---|---|
+| `https://yerlikoglon.uz/?fx=rain` | Yomg'ir |
+| `https://yerlikoglon.uz/?fx=snow` | Qor |
+| `https://yerlikoglon.uz/?fx=petal` | Bahorgi gulbarglar |
+| `https://yerlikoglon.uz/?fx=leaf` | Kuzgi barglar |
+| `https://yerlikoglon.uz/?fx=none` | Effektsiz (toza ekran) |
+
+Sahifani yangilamasdan almashtirish uchun brauzer konsolida:
+
+```js
+fxPreview('snow');   // 'rain' | 'snow' | 'petal' | 'leaf' | 'none'
+```
+
 ## Yangilash
 
 ```powershell

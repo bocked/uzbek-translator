@@ -10,6 +10,11 @@
         Qor kodlari (71-77, 85-86)             -> qor
         Qolganlari yoki API xatosi             -> qurilma oyiga qarab fasl
      3. Natija sessionStorage'da 30 daqiqaga keshlanadi.
+
+   Sinov rejimi (ob-havoni kutmasdan istalgan effektni ko'rish):
+     ?fx=rain | ?fx=snow | ?fx=petal | ?fx=leaf | ?fx=none
+     yoki konsolda: fxPreview('snow')
+   Bu rejim API'ga so'rov yubormaydi va keshga yozmaydi.
    ========================================================================== */
 (function () {
     'use strict';
@@ -21,6 +26,7 @@
 
     var PETAL_COLORS = ['#f9c9d8', '#f6b7cc', '#fdeef4', '#f3a9c3'];
     var LEAF_COLORS = ['#d97706', '#b45309', '#ca8a04', '#dc2626', '#ea580c'];
+    var MODES = { rain: 1, snow: 1, petal: 1, leaf: 1, none: 1 };
 
     var canvas = null;
     var ctx = null;
@@ -106,6 +112,16 @@
 
     /* ------------------------------------------------------------- canvas */
 
+    function prefersReduced() {
+        return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    }
+
+    function previewMode() {
+        var value = null;
+        try { value = new URLSearchParams(window.location.search).get('fx'); } catch (e) { return null; }
+        return value && MODES[value] ? value : null;
+    }
+
     function ensureCanvas() {
         if (canvas) return true;
         canvas = document.createElement('canvas');
@@ -114,8 +130,6 @@
         ctx = canvas.getContext ? canvas.getContext('2d') : null;
         if (!ctx) { canvas = null; return false; }
         document.body.appendChild(canvas);
-        window.addEventListener('resize', onResize, false);
-        document.addEventListener('visibilitychange', onVisibility, false);
         return true;
     }
 
@@ -283,15 +297,44 @@
 
     /* --------------------------------------------------------------- boot */
 
-    function boot() {
-        pickMode(function (value) {
-            mode = value;
-            if (mode === 'none') return;
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            if (!ensureCanvas()) return;
-            startLoop();
-        });
+    function applyMode(value) {
+        if (!MODES[value]) return false;
+        if (value === mode && (value === 'none' || canvas)) return true;
+
+        stopLoop();
+        mode = value;
+
+        if (value === 'none' || prefersReduced()) {
+            if (canvas) {
+                canvas.remove();
+                canvas = null;
+                ctx = null;
+                parts = [];
+            }
+            return true;
+        }
+
+        if (!ensureCanvas()) return false;
+        startLoop();
+        return true;
     }
+
+    function bind() {
+        window.addEventListener('resize', onResize, false);
+        document.addEventListener('visibilitychange', onVisibility, false);
+    }
+
+    function boot() {
+        bind();
+
+        var preview = previewMode();
+        if (preview) { applyMode(preview); return; }
+
+        pickMode(function (value) { applyMode(value); });
+    }
+
+    /* Konsoldan sinash: fxPreview('rain' | 'snow' | 'petal' | 'leaf' | 'none') */
+    window.fxPreview = applyMode;
 
     function schedule(fn) {
         if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 2000 });
