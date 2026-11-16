@@ -174,11 +174,11 @@
             p.vy = rand(420, 700);
             p.a = rand(0.22, 0.45);
         } else if (mode === 'snow') {
-            p.r = rand(1.2, 3.2);
+            p.r = rand(1.5, 3.4);
             p.vx = rand(-10, 6);
             p.vy = rand(22, 52);
             p.amp = rand(8, 26);
-            p.a = rand(0.45, 0.9);
+            p.a = rand(0.55, 0.95);
         } else if (mode === 'petal') {
             p.r = rand(3.4, 6.4);
             p.vx = rand(-6, 14);
@@ -229,6 +229,11 @@
             ctx.lineTo(p.x - 1.6, p.y + p.len);
             ctx.stroke();
         } else if (mode === 'snow') {
+            /* Oq qor och fonda ko'rinmay qolmasligi uchun yumshoq ko'k-kulrang halo */
+            ctx.fillStyle = 'rgba(112,134,166,0.5)';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r + 1.4, 0, Math.PI * 2);
+            ctx.fill();
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
