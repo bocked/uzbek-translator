@@ -139,7 +139,7 @@ body{
   box-shadow:inset 0 0 0 1px rgba(18,24,40,.03);
 }
 .seg button{
-  font:inherit;font-size:14px;font-weight:550;color:var(--muted);
+  font:inherit;font-size:14px;font-weight:550;color:#59606f;
   background:none;border:0;padding:9px 16px;border-radius:9px;cursor:pointer;
   transition:background .15s,color .15s,box-shadow .15s;white-space:nowrap;
 }
@@ -378,7 +378,7 @@ footer b{color:var(--ink-2);font-weight:550}
 
 <header class="site-head">
   <div class="head-in">
-    <a class="brand" href="#" aria-label="Yangi alifbo — bosh sahifa">
+    <a class="brand" href="./">
       <span class="brand-mark" aria-hidden="true">Ş</span>
       <span class="brand-text">
         <b>Yangi alifbo</b>
@@ -422,22 +422,22 @@ footer b{color:var(--ink-2);font-weight:550}
   </section>
 
   <nav class="tabs" role="tablist" aria-label="Bo'limlar">
-    <button type="button" class="active" data-view="matn" role="tab" aria-selected="true">
+    <button type="button" class="active" data-view="matn" id="tab-matn" role="tab" aria-selected="true" aria-controls="view-matn">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4.4-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.6 6.4 4 4"/></svg>
       Matn
     </button>
-    <button type="button" data-view="fayl" role="tab" aria-selected="false">
+    <button type="button" data-view="fayl" id="tab-fayl" role="tab" aria-selected="false" aria-controls="view-fayl">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 3H7a2.5 2.5 0 0 0-2.5 2.5v13A2.5 2.5 0 0 0 7 21h10a2.5 2.5 0 0 0 2.5-2.5V9L13.5 3Z"/><path d="M13.5 3v6H19"/></svg>
       Fayl
     </button>
-    <button type="button" data-view="qoida" role="tab" aria-selected="false">
+    <button type="button" data-view="qoida" id="tab-qoida" role="tab" aria-selected="false" aria-controls="view-qoida">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></svg>
       Qoidalar
     </button>
   </nav>
 
   <!-- ================= MATN ================= -->
-  <section class="view active" id="view-matn">
+  <section class="view active" id="view-matn" role="tabpanel" aria-labelledby="tab-matn">
     <div class="card editor-card">
       <div class="editor">
         <div class="pane">
@@ -477,7 +477,7 @@ footer b{color:var(--ink-2);font-weight:550}
   </section>
 
   <!-- ================= FAYL ================= -->
-  <section class="view" id="view-fayl">
+  <section class="view" id="view-fayl" role="tabpanel" aria-labelledby="tab-fayl">
     <div class="card editor-card">
       <label class="drop" id="drop">
         <span class="drop-ico">
@@ -512,7 +512,7 @@ footer b{color:var(--ink-2);font-weight:550}
   </section>
 
   <!-- ================= QOIDALAR ================= -->
-  <section class="view" id="view-qoida">
+  <section class="view" id="view-qoida" role="tabpanel" aria-labelledby="tab-qoida">
     <div class="card rules-card">
       <div class="table-wrap">
         <table class="rules">

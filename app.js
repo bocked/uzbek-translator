@@ -233,6 +233,7 @@
             t.addEventListener('click', function () {
                 Array.prototype.forEach.call(tabs, function (x) {
                     x.classList.toggle('active', x === t);
+                    x.setAttribute('aria-selected', x === t ? 'true' : 'false');
                 });
                 Array.prototype.forEach.call(document.querySelectorAll('.view'), function (v) {
                     v.classList.toggle('active', v.id === 'view-' + t.getAttribute('data-view'));
