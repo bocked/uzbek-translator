@@ -93,23 +93,42 @@
     var CARET_ICON = '<svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
     /* --------------------------------------------------- menyu (disclosure) */
-    function setMenu(menu, caret, open) {
+    function menuTriggers(menu) {
+        return Array.prototype.slice.call(
+            document.querySelectorAll('[aria-controls="' + menu.id + '"]')
+        );
+    }
+
+    function setMenu(menu, trigger, open) {
         menu.hidden = !open;
-        caret.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuTriggers(menu).forEach(function (t) {
+            t.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
         if (open) {
+            menu._opener = trigger;
             var first = menu.querySelector('button');
             if (first) first.focus();
         }
     }
 
+    function toggleMenu(menu, trigger, e) {
+        if (e) e.stopPropagation();
+        var open = menu.hidden;
+        closeAllMenus();
+        setMenu(menu, trigger, open);
+    }
+
     function closeAllMenus() {
         Array.prototype.forEach.call(document.querySelectorAll('.dl-menu'), function (menu) {
             if (menu.hidden) return;
-            var caret = document.querySelector('[aria-controls="' + menu.id + '"]');
+            var triggers = menuTriggers(menu);
+            var opener = menu._opener && triggers.indexOf(menu._opener) !== -1
+                ? menu._opener
+                : triggers[0];
             var hadFocus = menu.contains(document.activeElement);
             menu.hidden = true;
-            if (caret) caret.setAttribute('aria-expanded', 'false');
-            if (hadFocus && caret) caret.focus();
+            triggers.forEach(function (t) { t.setAttribute('aria-expanded', 'false'); });
+            if (hadFocus && opener) opener.focus();
         });
     }
 
@@ -226,13 +245,17 @@
         group.setAttribute('role', 'group');
         group.setAttribute('aria-label', 'Faylni yuklab olish');
 
+        var menuId = 'fileMenu' + (++menuSeq);
+
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn sm';
         btn.innerHTML = DOWN_ICON + ' Yuklab olish';
-        btn.addEventListener('click', function () { downloadChosen(item); });
+        btn.setAttribute('aria-haspopup', 'true');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-controls', menuId);
+        btn.addEventListener('click', function (e) { toggleMenu(menu, btn, e); });
 
-        var menuId = 'fileMenu' + (++menuSeq);
         var caret = document.createElement('button');
         caret.type = 'button';
         caret.className = 'btn sm caret';
@@ -256,7 +279,7 @@
             b.textContent = ALPHA[to] + 'ga';
             b.setAttribute('data-to', to);
             b.addEventListener('click', function () {
-                setMenu(menu, caret, false);
+                closeAllMenus();
                 item.chosen = to;
                 markCurrent(menu, to);
                 downloadChosen(item);
@@ -265,12 +288,7 @@
             menu.appendChild(b);
         });
 
-        caret.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var open = menu.hidden;
-            closeAllMenus();
-            setMenu(menu, caret, open);
-        });
+        caret.addEventListener('click', function (e) { toggleMenu(menu, caret, e); });
 
         group.appendChild(btn);
         group.appendChild(caret);
@@ -317,6 +335,22 @@
             : 'Hammasini yuklab olish (.zip)';
     }
 
+    /* Yo'nalish faqat matn uchun: Fayl ko'rinishida yoki fayl yuklanganida
+       uni ko'rinishdan faolsizlantiramiz (aria + disabled + CSS). */
+    function syncSetupState() {
+        var active = document.querySelector('.tabs button.active');
+        var view = active ? active.getAttribute('data-view') : 'matn';
+        var muted = view === 'fayl' || fileItems.length > 0;
+        var setup = document.querySelector('.setup');
+
+        setup.classList.toggle('is-muted', muted);
+        Array.prototype.forEach.call(setup.querySelectorAll('button, input'), function (el) {
+            el.disabled = muted;
+            if (muted) el.setAttribute('aria-disabled', 'true');
+            else el.removeAttribute('aria-disabled');
+        });
+    }
+
     function addFile(file) {
         var item = {
             file: file,
@@ -333,6 +367,7 @@
             dl: null
         };
         fileItems.push(item);
+        syncSetupState();
 
         pending++;
         setBusy();
@@ -496,6 +531,7 @@
                 Array.prototype.forEach.call(document.querySelectorAll('.view'), function (v) {
                     v.classList.toggle('active', v.id === 'view-' + t.getAttribute('data-view'));
                 });
+                syncSetupState();
                 closeAllMenus();
             });
         });
@@ -535,16 +571,15 @@
             fileItems = [];
             $('fileList').innerHTML = '';
             updateFileFoot();
+            syncSetupState();
         });
 
-        $('zipBtn').addEventListener('click', function () { zipNow(zipTarget); });
+        $('zipBtn').addEventListener('click', function (e) {
+            toggleMenu($('zipMenu'), this, e);
+        });
 
         $('zipMenuBtn').addEventListener('click', function (e) {
-            e.stopPropagation();
-            var menu = $('zipMenu');
-            var open = menu.hidden;
-            closeAllMenus();
-            setMenu(menu, this, open);
+            toggleMenu($('zipMenu'), this, e);
         });
 
         $('zipMenu').addEventListener('click', function (e) {
@@ -566,6 +601,7 @@
 
         markCurrent($('zipMenu'), zipTarget);
         updateFileFoot();
+        syncSetupState();
         refresh();
     }
 

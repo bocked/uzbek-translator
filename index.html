@@ -130,6 +130,7 @@ body{
   display:flex;align-items:center;justify-content:space-between;gap:22px;
   padding:18px 22px;margin-bottom:18px;
 }
+.setup.is-muted{opacity:.4;pointer-events:none}
 .setup-l{display:flex;align-items:center;gap:16px;min-width:0;flex-wrap:wrap}
 .setup-label{
   font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
@@ -565,7 +566,8 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 
       <div class="files-foot" id="fileActions" hidden>
         <div class="dl-group" id="zipGroup" role="group" aria-label="ZIP yuklab olish">
-          <button type="button" class="btn primary" id="zipBtn">
+          <button type="button" class="btn primary" id="zipBtn"
+                  aria-haspopup="true" aria-expanded="false" aria-controls="zipMenu">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg>
             <span id="zipLabel">Hammasini yuklab olish (.zip)</span>
           </button>
