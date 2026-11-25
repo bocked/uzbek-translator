@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yangi o'zbek alifbosi — Tarjimon va fayl o'giruvchi</title>
-<meta name="description" content="Matn, Word (.docx) va Excel (.xlsx) fayllarini yangi o'zbek alifbosiga (Ö ö, Ş ş, Ç ç, Ğ ğ) o'giradi. To'liq brauzerda, fayllar hech qayerga yuborilmaydi.">
+<!-- i18n.js title/meta ni ham yangilaydi -->
+<meta name="description" content="Matn, Word (.docx) va Excel (.xlsx) fayllarini yangi o'zbek alifbosiga (Ö ö, Ş ş, Ç ç, Ğ ğ) o'giradi. To'liq brauzerda, fayllar hech qayerga yuborilmaydi." data-i18n-content="meta.desc">
 <link rel="ai-catalog" type="application/json" href="/.well-known/ai-catalog.json">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%233b6ce8'/><text x='50' y='71' font-size='56' text-anchor='middle' fill='white' font-family='Arial'>Ş</text></svg>">
 <style>
@@ -94,6 +95,30 @@ body{
   padding:8px 14px;border-radius:999px;white-space:nowrap;
 }
 .head-note .i{width:14px;height:14px;color:var(--ok)}
+.head-right{display:flex;align-items:center;gap:10px}
+
+/* til tanlash — headerning yuqori o'ng burchagi */
+.lang{position:relative;flex:0 0 auto}
+.lang-trigger{
+  font:inherit;font-size:13px;font-weight:550;color:var(--ink-2);
+  background:var(--surface);border:1px solid var(--line);border-radius:999px;
+  padding:7px 11px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.lang-trigger:hover{border-color:var(--brand-line);background:var(--brand-soft);color:var(--brand)}
+.lang-trigger:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(59,108,232,.16)}
+.lang-trigger .i{width:11px;height:11px;opacity:.6}
+.lang-code{font-size:11.5px;font-weight:700;letter-spacing:.04em;line-height:1}
+.flag{
+  width:19px;height:13px;flex:0 0 auto;border-radius:2px;
+  box-shadow:inset 0 0 0 1px rgba(18,24,40,.14);
+}
+.lang .dl-menu{min-width:238px;padding:6px}
+.lang .dl-menu button{display:flex;align-items:center;gap:10px;padding:9px 10px;white-space:normal}
+.lang-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.3;min-width:0;flex:1}
+.lang-note{font-size:11px;font-weight:450;color:var(--muted);margin-top:1px}
+.lang-note[hidden]{display:none}
+.lang .dl-menu button[aria-current=true] .lang-note{color:var(--brand)}
 
 /* ---------------------------------------------------------------- layout */
 .page{max-width:var(--max);width:100%;margin:0 auto;padding:46px 28px 68px;flex:1}
@@ -445,19 +470,75 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 </head>
 <body>
 
+<!-- bayrog'lar: SVG, tashqi so'rov yo'q -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="flag-uz" viewBox="0 0 24 16">
+    <rect width="24" height="16" fill="#0099b5"/>
+    <rect y="5.2" width="24" height="5.6" fill="#fff"/>
+    <rect y="10.8" width="24" height="5.2" fill="#1eb53a"/>
+    <path d="M0 4.8h24M0 10.5h24" stroke="#d41225" stroke-width=".8"/>
+  </symbol>
+  <symbol id="flag-ru" viewBox="0 0 24 16">
+    <rect width="24" height="5.34" fill="#fff"/>
+    <rect y="5.34" width="24" height="5.33" fill="#0039a6"/>
+    <rect y="10.67" width="24" height="5.33" fill="#d52b1e"/>
+  </symbol>
+  <symbol id="flag-gb" viewBox="0 0 24 16">
+    <rect width="24" height="16" fill="#012169"/>
+    <path d="M0 0 24 16M24 0 0 16" stroke="#fff" stroke-width="4.5"/>
+    <path d="M0 0 24 16M24 0 0 16" stroke="#c8102e" stroke-width="2"/>
+    <path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="5.5"/>
+    <path d="M12 0v16M0 8h24" stroke="#c8102e" stroke-width="3"/>
+  </symbol>
+</svg>
+
 <header class="site-head">
   <div class="head-in">
     <a class="brand" href="./">
       <span class="brand-mark" aria-hidden="true">Ş</span>
       <span class="brand-text">
-        <b>Yangi alifbo</b>
-        <span>o'zbek yozuvi o'giruvchisi</span>
+        <b data-i18n="brand.name">Yangi alifbo</b>
+        <span data-i18n="brand.sub">o'zbek yozuvi o'giruvchisi</span>
       </span>
     </a>
-    <span class="head-note">
-      <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
-      Fayllar brauzerda qoladi
-    </span>
+    <div class="head-right">
+      <span class="head-note">
+        <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+        <span data-i18n="head.note">Fayllar brauzerda qoladi</span>
+      </span>
+      <div class="lang">
+        <button type="button" class="lang-trigger" id="langBtn"
+                aria-haspopup="true" aria-expanded="false" aria-controls="langMenu"
+                aria-label="Tilni tanlash" title="O'zbekcha (Lotin)">
+          <svg class="flag" aria-hidden="true"><use id="langFlagUse" href="#flag-uz"></use></svg>
+          <span class="lang-code" id="langCode">UZ</span>
+          <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="dl-menu" id="langMenu" role="group" aria-label="Interfeys tili"
+             data-i18n-aria="lang.menuAria" hidden>
+          <button type="button" data-lang="uz" aria-current="true">
+            <svg class="flag" aria-hidden="true"><use href="#flag-uz"></use></svg>
+            <span class="lang-text"><span class="lang-name">O'zbekcha (Lotin)</span><span class="lang-note" hidden></span></span>
+          </button>
+          <button type="button" data-lang="uz-yangi">
+            <svg class="flag" aria-hidden="true"><use href="#flag-uz"></use></svg>
+            <span class="lang-text"><span class="lang-name">O'zbekcha (Yangi lotin)</span><span class="lang-note" hidden>Ö, Ş, Ç, Ğ</span></span>
+          </button>
+          <button type="button" data-lang="uz-kirill">
+            <svg class="flag" aria-hidden="true"><use href="#flag-uz"></use></svg>
+            <span class="lang-text"><span class="lang-name">O'zbekcha (Kiril)</span><span class="lang-note" hidden>Ўзбекча</span></span>
+          </button>
+          <button type="button" data-lang="ru">
+            <svg class="flag" aria-hidden="true"><use href="#flag-ru"></use></svg>
+            <span class="lang-text"><span class="lang-name">Русский</span><span class="lang-note" hidden></span></span>
+          </button>
+          <button type="button" data-lang="en">
+            <svg class="flag" aria-hidden="true"><use href="#flag-gb"></use></svg>
+            <span class="lang-text"><span class="lang-name">English</span><span class="lang-note" hidden></span></span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -465,9 +546,9 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 
   <section class="intro">
     <div class="intro-copy">
-      <div class="eyebrow">Matn · Word · Excel</div>
-      <h1>Yozuvni yangi o'zbek alifbosiga o'giring</h1>
-      <p>Eski lotin yoki kirill yozuvidagi matnni, Word va Excel hujjatlarini bir zumda yangi alifboga o'tkazing. Hech narsa serverga yuborilmaydi.</p>
+      <div class="eyebrow" data-i18n="intro.eyebrow">Matn · Word · Excel</div>
+      <h1 data-i18n="intro.title">Yozuvni yangi o'zbek alifbosiga o'giring</h1>
+      <p data-i18n="intro.desc">Eski lotin yoki kirill yozuvidagi matnni, Word va Excel hujjatlarini bir zumda yangi alifboga o'tkazing. Hech narsa serverga yuborilmaydi.</p>
     </div>
     <div class="letters" aria-hidden="true">
       <span>Ö</span><span>Ş</span><span>Ç</span><span>Ğ</span>
@@ -476,32 +557,32 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 
   <section class="card setup">
     <div class="setup-l">
-      <span class="setup-label">Yo'nalish</span>
-      <div class="seg" id="modeSeg" role="group" aria-label="O'girish yo'nalishi">
-        <button type="button" data-mode="lotin" class="active">Lotin → Yangi</button>
-        <button type="button" data-mode="kirill">Kirill → Yangi</button>
-        <button type="button" data-mode="orqaga">Yangi → Lotin</button>
+      <span class="setup-label" data-i18n="setup.label">Yo'nalish</span>
+      <div class="seg" id="modeSeg" role="group" aria-label="O'girish yo'nalishi" data-i18n-aria="setup.aria">
+        <button type="button" data-mode="lotin" class="active" data-i18n="mode.lotin">Lotin → Yangi</button>
+        <button type="button" data-mode="kirill" data-i18n="mode.kirill">Kirill → Yangi</button>
+        <button type="button" data-mode="orqaga" data-i18n="mode.orqaga">Yangi → Lotin</button>
       </div>
     </div>
     <label class="switch">
       <input type="checkbox" id="optLinks" checked>
       <span class="track"></span>
-      <span>Havolalarni saqlash</span>
+      <span data-i18n="opt.links">Havolalarni saqlash</span>
     </label>
   </section>
 
-  <nav class="tabs" role="tablist" aria-label="Bo'limlar">
+  <nav class="tabs" role="tablist" aria-label="Bo'limlar" data-i18n-aria="tabs.aria">
     <button type="button" class="active" data-view="matn" id="tab-matn" role="tab" aria-selected="true" aria-controls="view-matn">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4.4-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.6 6.4 4 4"/></svg>
-      Matn
+      <span data-i18n="tab.matn">Matn</span>
     </button>
     <button type="button" data-view="fayl" id="tab-fayl" role="tab" aria-selected="false" aria-controls="view-fayl">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.5 3H7a2.5 2.5 0 0 0-2.5 2.5v13A2.5 2.5 0 0 0 7 21h10a2.5 2.5 0 0 0 2.5-2.5V9L13.5 3Z"/><path d="M13.5 3v6H19"/></svg>
-      Fayl
+      <span data-i18n="tab.fayl">Fayl</span>
     </button>
     <button type="button" data-view="qoida" id="tab-qoida" role="tab" aria-selected="false" aria-controls="view-qoida">
       <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></svg>
-      Qoidalar
+      <span data-i18n="tab.qoida">Qoidalar</span>
     </button>
   </nav>
 
@@ -511,17 +592,17 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       <div class="editor">
         <div class="pane">
           <div class="pane-head">
-            <h2>Manba matn</h2>
+            <h2 data-i18n="pane.src">Manba matn</h2>
             <span class="pane-meta" id="srcCount">0 belgi</span>
           </div>
-          <textarea id="src" spellcheck="false" placeholder="Matnni shu yerga yozing yoki qo'ying…"></textarea>
+          <textarea id="src" spellcheck="false" placeholder="Matnni shu yerga yozing yoki qo'ying…" data-i18n-placeholder="ph.src"></textarea>
         </div>
         <div class="pane">
           <div class="pane-head">
-            <h2>Natija</h2>
+            <h2 data-i18n="pane.out">Natija</h2>
             <span class="pane-meta brand" id="outHint">yangi alifbo</span>
           </div>
-          <textarea id="dst" readonly spellcheck="false" placeholder="Natija shu yerda paydo bo'ladi"></textarea>
+          <textarea id="dst" readonly spellcheck="false" placeholder="Natija shu yerda paydo bo'ladi" data-i18n-placeholder="ph.out"></textarea>
         </div>
       </div>
 
@@ -529,15 +610,15 @@ footer .visits b{color:var(--ink-2);font-weight:600}
         <div class="actions">
           <button type="button" class="btn primary" id="copyBtn">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-7A2.5 2.5 0 0 0 3 5.5v7A2.5 2.5 0 0 0 5.5 15"/></svg>
-            Nusxa olish
+            <span data-i18n="btn.copy">Nusxa olish</span>
           </button>
           <button type="button" class="btn" id="swapBtn">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V4"/><path d="m3 8 4-4 4 4"/><path d="M17 4v16"/><path d="m13 16 4 4 4-4"/></svg>
-            Natijani manbaga
+            <span data-i18n="btn.swap">Natijani manbaga</span>
           </button>
           <button type="button" class="btn" id="clearBtn">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7"/><path d="m6 7 1 12.4A1.5 1.5 0 0 0 8.5 21h7a1.5 1.5 0 0 0 1.5-1.6L18 7"/><path d="M10 11v6M14 11v6"/></svg>
-            Tozalash
+            <span data-i18n="btn.clear">Tozalash</span>
           </button>
         </div>
         <span class="stats" id="stats">—</span>
@@ -552,12 +633,12 @@ footer .visits b{color:var(--ink-2);font-weight:600}
         <span class="drop-ico">
           <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4"/><path d="m7 9 5-5 5 5"/><path d="M4 16v2.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V16"/></svg>
         </span>
-        <h2>Faylni tanlang yoki bu yerga tashlang tilni yuklab olishda tanlaysiz</h2>
-        <p>Word yoki Excel hujjati — bir nechta faylni birga yuklash mumkin</p>
+        <h2 data-i18n="drop.title">Faylni tanlang yoki bu yerga tashlang tilni yuklab olishda tanlaysiz</h2>
+        <p data-i18n="drop.desc">Word yoki Excel hujjati — bir nechta faylni birga yuklash mumkin</p>
         <span class="formats">
           <span class="chip">.docx</span>
           <span class="chip">.xlsx</span>
-          <span class="chip">bir nechta fayl</span>
+          <span class="chip" data-i18n="drop.multi">bir nechta fayl</span>
         </span>
         <input type="file" id="fileInput" accept=".docx,.xlsx,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple>
       </label>
@@ -565,7 +646,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       <div class="files" id="fileList"></div>
 
       <div class="files-foot" id="fileActions" hidden>
-        <div class="dl-group" id="zipGroup" role="group" aria-label="ZIP yuklab olish">
+        <div class="dl-group" id="zipGroup" role="group" aria-label="ZIP yuklab olish" data-i18n-aria="zip.group">
           <button type="button" class="btn primary" id="zipBtn"
                   aria-haspopup="true" aria-expanded="false" aria-controls="zipMenu">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg>
@@ -573,19 +654,19 @@ footer .visits b{color:var(--ink-2);font-weight:600}
           </button>
           <button type="button" class="btn primary caret" id="zipMenuBtn"
                   aria-haspopup="true" aria-expanded="false" aria-controls="zipMenu"
-                  aria-label="ZIP uchun alifbo tanlash">
+                  aria-label="ZIP uchun alifbo tanlash" data-i18n-aria="zip.aria">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div class="dl-menu" id="zipMenu" role="group" aria-label="ZIP uchun alifbo" hidden>
-            <button type="button" data-to="kirill">Kiril alifbosiga</button>
-            <button type="button" data-to="eski">Eski lotin alifbosiga</button>
-            <button type="button" data-to="yangi">Yangi o'zbek alifbosiga</button>
+          <div class="dl-menu" id="zipMenu" role="group" aria-label="ZIP uchun alifbo" data-i18n-aria="zip.menuAria" hidden>
+            <button type="button" data-to="kirill" data-i18n="alphaOption.kirill">Kiril alifbosiga</button>
+            <button type="button" data-to="eski" data-i18n="alphaOption.eski">Eski lotin alifbosiga</button>
+            <button type="button" data-to="yangi" data-i18n="alphaOption.yangi">Yangi o'zbek alifbosiga</button>
           </div>
         </div>
-        <button type="button" class="btn" id="clearFiles">Ro'yxatni tozalash</button>
+        <button type="button" class="btn" id="clearFiles" data-i18n="clear.files">Ro'yxatni tozalash</button>
       </div>
 
-      <p class="section-note">
+      <p class="section-note" data-i18n-html="file.note">
         Fayl ichidagi shrift, rang, jadval va kataklar o'zgartirilmaydi — faqat harflar almashtiriladi.
         Har bir fayl yonidagi <b>▾</b> tugmasi bilan, shuningdek ZIP yuklab olish tugmasi yonidagi
         <b>▾</b> bilan natija alifbosini tanlashingiz mumkin. Eski <b>.doc</b> va <b>.xls</b>
@@ -601,7 +682,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       <div class="table-wrap">
         <table class="rules">
           <thead>
-            <tr><th>Eski yozuv</th><th>Yangi alifbo</th><th>Misol</th></tr>
+            <tr><th data-i18n="rules.h1">Eski yozuv</th><th data-i18n="rules.h2">Yangi alifbo</th><th data-i18n="rules.h3">Misol</th></tr>
           </thead>
           <tbody>
             <tr><td class="old">Oʻ / oʻ</td><td class="new">Ö / ö</td><td class="ex">Oʻzbekiston → Özbekiston</td></tr>
@@ -611,13 +692,13 @@ footer .visits b{color:var(--ink-2);font-weight:600}
           </tbody>
         </table>
       </div>
-      <p class="section-note">
+      <p class="section-note" data-i18n-html="rules.note">
         Tutuq belgisi (ʼ) va boshqa tinish belgilari o'zgartirilmaydi.
         <b>ng</b> harf birikmasi ham o'zgartirilmaydi: <i>tong → tong</i>.
       </p>
 
       <details>
-        <summary>Kirill alifbosidan o'girish jadvali</summary>
+        <summary data-i18n="rules.d1">Kirill alifbosidan o'girish jadvali</summary>
         <div class="inner">
           <div class="table-wrap">
             <table class="rules">
@@ -630,7 +711,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
               </tbody>
             </table>
           </div>
-          <p class="section-note">
+          <p class="section-note" data-i18n-html="rules.d1note">
             «е, ё, ю, я» harflari soʻz boshida yoki unlidan keyin <b>ye, yo, yu, ya</b> shaklida,
             undoshdan keyin esa <b>e, o, u, a</b> shaklida yoziladi: <i>елка → yelka</i>, <i>келди → keldi</i>.
             Keyin natijaga yuqoridagi yangi alifbo qoidalari qoʻllanadi.
@@ -639,9 +720,9 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       </details>
 
       <details>
-        <summary>Nima uchun ba'zi so'zlar noto'g'ri chiqishi mumkin</summary>
+        <summary data-i18n="rules.d2">Nima uchun ba'zi so'zlar noto'g'ri chiqishi mumkin</summary>
         <div class="inner">
-          <p class="section-note">
+          <p class="section-note" data-i18n-html="rules.d2note">
             O'girish qoidalar asosida ishlaydi, lug'at asosida emas. Inglizcha yoki boshqa tildagi
             so'zlarda ham <b>sh</b>, <b>ch</b> uchrab qolsa, ular ham almashtiriladi
             (masalan <i>ship → şip</i>). Shuning uchun aralash tilli hujjatlar bilan natijani
@@ -655,9 +736,9 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 </main>
 
 <footer>
-  <div><b>Yangi o'zbek alifbosi</b> · hammasi brauzerda ishlaydi · fayllar hech qayerga yuborilmaydi</div>
-  <div class="visits" id="visits" hidden title="Har bir tashrifchi 24 soatda bir marta hisoblanadi">
-    Tashriflar soni: <b id="visitCount">—</b>
+  <div data-i18n-html="footer.line"><b>Yangi o'zbek alifbosi</b> · hammasi brauzerda ishlaydi · fayllar hech qayerga yuborilmaydi</div>
+  <div class="visits" id="visits" hidden title="Har bir tashrifchi 24 soatda bir marta hisoblanadi" data-i18n-title="visits.title">
+    <span data-i18n="visits.label">Tashriflar soni:</span> <b id="visitCount">—</b>
   </div>
 </footer>
 
@@ -666,7 +747,8 @@ footer .visits b{color:var(--ink-2);font-weight:600}
 <script src="alifbo-core.js"></script>
 <script src="zip-lite.js"></script>
 <script src="convert.js"></script>
-<script src="app.js?v=6"></script>
+<script src="i18n.js?v=3"></script>
+<script src="app.js?v=7"></script>
 <script src="effects.js"></script>
 <script src="visits.js"></script>
 </body>

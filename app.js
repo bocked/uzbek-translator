@@ -5,12 +5,10 @@
     'use strict';
 
     var $ = function (id) { return document.getElementById(id); };
-
-    var ALPHA = {
-        kirill: 'Kiril alifbosi',
-        eski: 'Eski lotin alifbosi',
-        yangi: "Yangi o'zbek alifbosi"
+    var t = function (key, vars) {
+        return window.I18N ? window.I18N.t(key, vars) : key;
     };
+    var alpha = function (to) { return t('alpha.' + to); };
     var ZIP_NAME = {
         yangi: 'yangi-alifbo-fayllar.zip',
         eski: 'eski-lotin-fayllar.zip',
@@ -39,14 +37,14 @@
         var changed = out !== src.value;
 
         $('stats').innerHTML =
-            '<b>' + out.length + '</b> belgi · <b>' + words + '</b> so\u02BBz · ' +
+            '<b>' + out.length + '</b> ' + t('unit.char') + ' · <b>' + words + '</b> ' + t('unit.word') + ' · ' +
             (changed
-                ? '<span class="ok">o\u02BBgirildi</span>'
-                : 'o\u02BBzgarish yo\u02BBq');
+                ? '<span class="ok">' + t('status.changed') + '</span>'
+                : t('status.same'));
 
-        $('srcCount').textContent = src.value.length + ' belgi';
+        $('srcCount').textContent = src.value.length + ' ' + t('unit.char');
 
-        $('outHint').textContent = state.mode === 'orqaga' ? 'eski lotin' : 'yangi alifbo';
+        $('outHint').textContent = state.mode === 'orqaga' ? t('out.eski') : t('out.yangi');
     }
 
     var debounce = null;
@@ -157,11 +155,11 @@
 
         var fsub = document.createElement('div');
         fsub.className = 'fsub';
-        fsub.textContent = humanSize(size) + ' · o\u02BBgirilmoqda…';
+        fsub.textContent = humanSize(size) + ' · ' + t('file.converting');
 
         var fdet = document.createElement('div');
         fdet.className = 'fdet';
-        fdet.textContent = 'Alifbo aniqlanmoqda…';
+        fdet.textContent = t('file.detecting');
 
         meta.appendChild(fname);
         meta.appendChild(fsub);
@@ -179,8 +177,8 @@
     }
 
     function detectionText(item) {
-        var text = 'Fayl ' + ALPHA[item.from] + 'da aniqlandi';
-        if (item.guess) text += ' (taxmin)';
+        var text = t('file.detected', { alpha: alpha(item.from) });
+        if (item.guess) text += t('file.guess');
         return text;
     }
 
@@ -188,9 +186,11 @@
         if (item.ref.spin.parentNode) item.ref.spin.parentNode.removeChild(item.ref.spin);
         item.ref.row.classList.remove('err');
         item.ref.fsub.className = 'fsub ok';
+        var info = variant.parts ? t('file.parts', { n: variant.parts }) : t('file.noChange');
         item.ref.fsub.textContent =
-            variant.outName + ' · ' + humanSize(variant.blob.size) + ' · ' + variant.info;
+            variant.outName + ' · ' + humanSize(variant.blob.size) + ' · ' + info;
         item.ref.fdet.textContent = detectionText(item);
+        item.shownVariant = variant;
     }
 
     function markError(ref, message) {
@@ -198,7 +198,7 @@
         ref.row.classList.add('err');
         ref.fsub.className = 'fsub bad';
         ref.fsub.textContent = message;
-        ref.fdet.textContent = 'Alifbo aniqlanmadi';
+        ref.fdet.textContent = t('file.notDetected');
     }
 
     /* ------------------------------------------- variantlar (kerak paytda) */
@@ -216,9 +216,7 @@
                 var variant = {
                     blob: res.blob,
                     outName: Convert.outputName(item.name, { to: res.to }),
-                    info: res.changedParts
-                        ? res.changedParts + " qism o\u02BBzgartirildi"
-                        : "o\u02BBzgarish topilmadi",
+                    parts: res.changedParts,
                     from: res.from,
                     detected: res.detected,
                     mode: res.mode
@@ -243,14 +241,14 @@
         var group = document.createElement('div');
         group.className = 'dl-group';
         group.setAttribute('role', 'group');
-        group.setAttribute('aria-label', 'Faylni yuklab olish');
+        group.setAttribute('aria-label', t('dl.group'));
 
         var menuId = 'fileMenu' + (++menuSeq);
 
         var btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn sm';
-        btn.innerHTML = DOWN_ICON + ' Yuklab olish';
+        btn.innerHTML = DOWN_ICON + ' ' + t('dl.btn');
         btn.setAttribute('aria-haspopup', 'true');
         btn.setAttribute('aria-expanded', 'false');
         btn.setAttribute('aria-controls', menuId);
@@ -262,21 +260,21 @@
         caret.setAttribute('aria-haspopup', 'true');
         caret.setAttribute('aria-expanded', 'false');
         caret.setAttribute('aria-controls', menuId);
-        caret.setAttribute('aria-label', 'Yuklab olish alifbosini tanlash');
+        caret.setAttribute('aria-label', t('dl.caret'));
         caret.innerHTML = CARET_ICON;
 
         var menu = document.createElement('div');
         menu.className = 'dl-menu';
         menu.id = menuId;
         menu.setAttribute('role', 'group');
-        menu.setAttribute('aria-label', 'Yuklab olish alifbosi');
+        menu.setAttribute('aria-label', t('dl.menu'));
         menu.hidden = true;
 
         var options = {};
         TARGETS.forEach(function (to) {
             var b = document.createElement('button');
             b.type = 'button';
-            b.textContent = ALPHA[to] + 'ga';
+            b.textContent = t('alphaOption.' + to);
             b.setAttribute('data-to', to);
             b.addEventListener('click', function () {
                 closeAllMenus();
@@ -308,10 +306,10 @@
             .then(function (v) {
                 renderRow(item, v);
                 download(v.blob, v.outName);
-                toast('Yuklab olinmoqda: ' + v.outName);
+                toast(t('toast.download', { name: v.outName }));
             })
             .catch(function (e) {
-                toast('O\u02BBgirib bo\u02BBlmadi: ' + (e && e.message ? e.message : e));
+                toast(t('toast.fail', { msg: e && e.message ? e.message : e }));
             })
             .then(function () { btn.disabled = false; });
     }
@@ -331,8 +329,40 @@
         var n = goodItems().length;
         $('fileActions').hidden = n === 0;
         $('zipLabel').textContent = n
-            ? 'Hammasini yuklab olish (' + n + ' fayl)'
-            : 'Hammasini yuklab olish (.zip)';
+            ? t('zip.count', { n: n })
+            : t('zip.default');
+    }
+
+    /* Til o'zgarganda allaqachon yaratilgan matnlar ham yangilanadi. */
+    function applyLanguage() {
+        refresh();
+        updateFileFoot();
+
+        fileItems.forEach(function (item) {
+            if (item.shownVariant) {
+                renderRow(item, item.shownVariant);
+            } else if (item.error) {
+                item.ref.fdet.textContent = t('file.notDetected');
+            } else {
+                item.ref.fsub.textContent = humanSize(item.size) + ' · ' + t('file.converting');
+                item.ref.fdet.textContent = t('file.detecting');
+            }
+            if (!item.dl) return;
+            item.dl.group.setAttribute('aria-label', t('dl.group'));
+            item.dl.btn.innerHTML = DOWN_ICON + ' ' + t('dl.btn');
+            item.dl.caret.setAttribute('aria-label', t('dl.caret'));
+            item.dl.menu.setAttribute('aria-label', t('dl.menu'));
+            TARGETS.forEach(function (to) {
+                item.dl.options[to].textContent = t('alphaOption.' + to);
+            });
+        });
+
+        $('zipGroup').setAttribute('aria-label', t('zip.group'));
+        $('zipMenuBtn').setAttribute('aria-label', t('zip.aria'));
+        $('zipMenu').setAttribute('aria-label', t('zip.menuAria'));
+        Array.prototype.forEach.call($('zipMenu').querySelectorAll('button[data-to]'), function (b) {
+            b.textContent = t('alphaOption.' + b.getAttribute('data-to'));
+        });
     }
 
     /* Yo'nalish faqat matn uchun: Fayl ko'rinishida yoki fayl yuklanganida
@@ -381,7 +411,7 @@
                 addDownloadButtons(item);
             })
             .catch(function (e) {
-                item.error = e && e.message ? e.message : 'Noma\u02BClum xatolik';
+                item.error = e && e.message ? e.message : t('file.unknown');
                 markError(item.ref, item.error);
             })
             .then(function () {
@@ -401,7 +431,7 @@
             if (/\.(docx|xlsx)$/i.test(f.name)) files.push(f);
             else skipped++;
         });
-        if (skipped) toast(skipped + ' ta fayl .docx/.xlsx emas');
+        if (skipped) toast(t('file.skipped', { n: skipped }));
         if (!files.length) return;
 
         var done = 0;
@@ -409,7 +439,7 @@
             addFile(f).then(function () {
                 done++;
                 if (done === files.length && goodItems().length) {
-                    toast('Tayyor: ' + goodItems().length + ' ta fayl');
+                    toast(t('file.ready', { n: goodItems().length }));
                 }
             });
         });
@@ -429,7 +459,7 @@
         var label = $('zipLabel');
         btn.disabled = true;
         caret.disabled = true;
-        label.textContent = 'Paketlanmoqda…';
+        label.textContent = t('zip.packing');
 
         var chain = Promise.resolve();
         var variants = [];
@@ -456,10 +486,10 @@
                 }
                 var buf = await ZipLite.zipWrite(entries);
                 download(new Blob([buf], { type: 'application/zip' }), ZIP_NAME[to]);
-                toast('Arxiv tayyor: ' + ALPHA[to]);
+                toast(t('toast.zipReady', { name: alpha(to) }));
             })
             .catch(function (e) {
-                toast('Arxivlab bo\u02BBlmadi: ' + (e && e.message ? e.message : e));
+                toast(t('toast.zipFail', { msg: e && e.message ? e.message : e }));
             })
             .then(function () {
                 btn.disabled = false;
@@ -490,13 +520,13 @@
 
         $('copyBtn').addEventListener('click', function () {
             var text = $('dst').value;
-            if (!text) { toast('Nusxa olish uchun matn yo\u02BBq'); return; }
+            if (!text) { toast(t('toast.copyEmpty')); return; }
 
-            function done() { toast('Nusxa olindi'); }
+            function done() { toast(t('toast.copied')); }
             function fallback() {
                 $('dst').select();
                 try { document.execCommand('copy'); done(); }
-                catch (e) { toast('Nusxa olib bo\u02BBlmadi'); }
+                catch (e) { toast(t('toast.copyFail')); }
             }
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -511,7 +541,7 @@
             if (!out) return;
             $('src').value = out;
             refresh();
-            toast('Natija manbaga ko\u02BBchirildi');
+            toast(t('toast.swapped'));
         });
 
         $('clearBtn').addEventListener('click', function () {
@@ -588,8 +618,20 @@
             zipNow(b.getAttribute('data-to'));
         });
 
+        /* --- til tanlash (header) --- */
+        $('langBtn').addEventListener('click', function (e) {
+            toggleMenu($('langMenu'), this, e);
+        });
+        $('langMenu').addEventListener('click', function (e) {
+            var b = e.target.closest('button[data-lang]');
+            if (!b) return;
+            window.I18N.set(b.getAttribute('data-lang'));
+            closeAllMenus();
+        });
+        document.addEventListener('i18n:change', applyLanguage);
+
         document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dl-group')) closeAllMenus();
+            if (!e.target.closest('.dl-group, .lang')) closeAllMenus();
         });
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') closeAllMenus();

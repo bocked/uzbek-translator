@@ -39,6 +39,9 @@
 /app.js
   Cache-Control: public, max-age=0, must-revalidate
 
+/i18n.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /alifbo-core.js
   Cache-Control: public, max-age=0, must-revalidate
 
