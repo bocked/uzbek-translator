@@ -19,11 +19,15 @@ Zaxira nusxa: https://bocked.github.io/uzbek-translator/
 
 `ng` harf birikmasi **o'zgartirilmaydi** — `tong → tong`.
 
-Uch yo'nalish qo'llab-quvvatlanadi:
+Matn bo'limidagi yo'nalishlar:
 
 - **Lotin → Yangi** — eski lotin yozuvini yangi alifboga o'tkazadi
 - **Kirill → Yangi** — kirill matnini avval lotinga, so'ng yangi alifboga o'tkazadi
 - **Yangi → Lotin** — teskari o'girish
+
+Fayl bo'limida esa manba alifbo **avtomatik aniqlanadi** (kirill / eski lotin /
+yangi o'zbek), natijani esa Kiril, Eski lotin yoki Yangi o'zbek alifbosida olish
+mumkin — aniqlash va maqsad bir-biridan mustaqil.
 
 ## Fayllar bilan ishlash
 
@@ -31,11 +35,22 @@ Uch yo'nalish qo'llab-quvvatlanadi:
 qismlarini (`word/document.xml`, `xl/sharedStrings.xml`, ish varoqlari) topadi,
 faqat **matn tugunlarini** o'zgartiradi va qayta qadoqlaydi.
 
-Saqlanadi: shrift, rang, jadval tuzilishi, rasmlar, formulalar, uslublar.
+Saqlanadi: shrift, rang, jadval tuzilishi, kataklar, rasmlar, formulalar, uslublar.
 
 `sh`/`ch` kabi harflar Word'da alohida run'larga bo'lingan bo'lishi mumkin —
 ilova ularni butun paragraf bo'yicha birlashtirib o'giradi, shuning uchun
 bo'lingan holatlarda ham to'g'ri ishlaydi.
+
+Fayl yuklanganda uning dastlabki alifbosi ko'rinadigan matn bo'laklaridan
+aniqlanadi va qatorga kichik badge qo'yiladi: «Fayl Kiril alifbosida aniqlandi».
+Belgilar yetarli bo'lmaganda `(taxmin)` qo'shimchasi ko'rsatiladi.
+
+Har bir fayl qatoridagi **Yuklab olish** tugmasi oxirgi tanlangan alifboda
+yuklaydi; yonidagi **▾** tugmasi esa Kiril / Eski lotin / Yangi o'zbek
+alifbolaridan birini tanlab yuklashga imkon beradi. Xuddi shu menyu
+**Hammasini yuklab olish (.zip)** tugmasi yonida ham bor — barcha fayllar
+tanlangan alifboda qadoqlanadi. Har bir fayl uchun tayyorlangan variantlar
+brauzer xotirasida keshlashadi, qayta yuklashda serverga hech narsa yuborilmaydi.
 
 ## Loyiha tuzilishi
 

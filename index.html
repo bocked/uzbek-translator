@@ -272,6 +272,34 @@ textarea[readonly]{background:#fcfcfe;color:var(--ink-2)}
 }
 input[type=file]{display:none}
 
+/* yuklab olish tugmasi + alifbo tanlovi (har bir fayl va ZIP uchun) */
+.dl-group{position:relative;display:inline-flex;align-items:center;gap:5px;flex:0 0 auto}
+.dl-group .caret{
+  padding:10px 9px;border-color:var(--line-strong);
+  background:var(--surface);color:var(--ink-2);
+}
+.dl-group .caret.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.dl-group .caret.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover);color:#fff}
+.dl-group .caret .i{width:12px;height:12px;margin:auto}
+.dl-menu{
+  position:absolute;top:calc(100% + 6px);right:0;z-index:20;
+  min-width:210px;padding:6px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:11px;box-shadow:0 14px 30px -12px rgba(18,24,40,.28);
+  display:flex;flex-direction:column;gap:2px;
+}
+.dl-menu[hidden]{display:none}
+.dl-menu button{
+  font:inherit;font-size:13px;font-weight:500;text-align:left;
+  padding:8px 10px;border:0;border-radius:8px;cursor:pointer;
+  background:none;color:var(--ink-2);white-space:nowrap;
+}
+.dl-menu button:hover{background:var(--brand-soft);color:var(--brand)}
+.dl-menu button:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(59,108,232,.18)}
+.dl-menu button[aria-current=true]{
+  background:var(--brand-soft);color:var(--brand);font-weight:600;
+}
+
 .files{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .file{
   display:flex;align-items:center;gap:14px;padding:14px 16px;
@@ -292,6 +320,13 @@ input[type=file]{display:none}
 .file .fsub{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .file .fsub.ok{color:var(--ok)}
 .file .fsub.bad{color:var(--danger)}
+.file .fdet{
+  font-size:12px;color:var(--brand);margin-top:3px;font-weight:550;
+}
+.file .fdet::before{
+  content:"●";font-size:8px;margin-right:5px;vertical-align:1px;
+}
+.file.err .fdet{color:var(--danger)}
 .file .btn{flex:0 0 auto}
 .spin{
   width:16px;height:16px;border:2px solid var(--line-strong);border-top-color:var(--brand);
@@ -380,6 +415,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
   .tabs button{flex:1;justify-content:center;padding:10px 8px;font-size:14px}
   .tabs button .i{display:none}
   .file .fico{display:none}
+  .dl-menu{min-width:200px}
   .file .btn .i{display:none}
 }
 @media (max-width:480px){
@@ -513,16 +549,30 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       <div class="files" id="fileList"></div>
 
       <div class="files-foot" id="fileActions" hidden>
-        <button type="button" class="btn primary" id="zipBtn">
-          <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg>
-          <span id="zipLabel">Hammasini yuklab olish (.zip)</span>
-        </button>
+        <div class="dl-group" id="zipGroup">
+          <button type="button" class="btn primary" id="zipBtn">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg>
+            <span id="zipLabel">Hammasini yuklab olish (.zip)</span>
+          </button>
+          <button type="button" class="btn primary caret" id="zipMenuBtn"
+                  aria-haspopup="true" aria-expanded="false" aria-controls="zipMenu"
+                  aria-label="ZIP uchun alifbo tanlash">
+            <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="dl-menu" id="zipMenu" role="group" aria-label="ZIP uchun alifbo" hidden>
+            <button type="button" data-to="kirill">Kiril alifbosiga</button>
+            <button type="button" data-to="eski">Eski lotin alifbosiga</button>
+            <button type="button" data-to="yangi">Yangi o'zbek alifbosiga</button>
+          </div>
+        </div>
         <button type="button" class="btn" id="clearFiles">Ro'yxatni tozalash</button>
       </div>
 
       <p class="section-note">
-        Fayl ichidagi shrift, rang, jadval va rasmlar o'zgartirilmaydi — faqat harflar almashtiriladi.
-        Eski <b>.doc</b> va <b>.xls</b> formatlari qo'llab-quvvatlanmaydi; ularni avval Word yoki Excel'da
+        Fayl ichidagi shrift, rang, jadval va kataklar o'zgartirilmaydi — faqat harflar almashtiriladi.
+        Har bir fayl yonidagi <b>▾</b> tugmasi bilan, shuningdek ZIP yuklab olish tugmasi yonidagi
+        <b>▾</b> bilan natija alifbosini tanlashingiz mumkin. Eski <b>.doc</b> va <b>.xls</b>
+        formatlari qo'llab-quvvatlanmaydi; ularni avval Word yoki Excel'da
         <b>.docx</b> / <b>.xlsx</b> qilib saqlang.
       </p>
     </div>
