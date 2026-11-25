@@ -223,6 +223,8 @@
 
         var group = document.createElement('div');
         group.className = 'dl-group';
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', 'Faylni yuklab olish');
 
         var btn = document.createElement('button');
         btn.type = 'button';

@@ -273,14 +273,29 @@ textarea[readonly]{background:#fcfcfe;color:var(--ink-2)}
 input[type=file]{display:none}
 
 /* yuklab olish tugmasi + alifbo tanlovi (har bir fayl va ZIP uchun) */
-.dl-group{position:relative;display:inline-flex;align-items:center;gap:5px;flex:0 0 auto}
+.dl-group{position:relative;display:inline-flex;align-items:stretch;gap:0;flex:0 0 auto}
+.dl-group > .btn:first-child{
+  border-top-right-radius:0;border-bottom-right-radius:0;
+}
 .dl-group .caret{
-  padding:10px 9px;border-color:var(--line-strong);
+  position:relative;z-index:1;margin-left:-1px;
+  min-width:38px;justify-content:center;
+  padding-left:9px;padding-right:9px;
+  border-color:var(--line-strong);border-radius:0 10px 10px 0;
   background:var(--surface);color:var(--ink-2);
 }
-.dl-group .caret.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.dl-group .caret.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover);color:#fff}
-.dl-group .caret .i{width:12px;height:12px;margin:auto}
+.dl-group .caret.sm{min-width:34px;padding-left:8px;padding-right:8px;border-radius:0 9px 9px 0}
+.dl-group .caret:hover{background:var(--brand-soft);border-color:var(--brand-line);color:var(--brand)}
+.dl-group .caret.primary{
+  border-color:var(--brand);border-left-color:rgba(255,255,255,.28);
+  background:var(--brand);color:#fff;
+}
+.dl-group .caret.primary:hover{
+  border-color:var(--brand-hover);border-left-color:rgba(255,255,255,.28);
+  background:var(--brand-hover);color:#fff;
+}
+.dl-group .caret:focus-visible{z-index:2}
+.dl-group .caret .i{width:12px;height:12px;margin:0}
 .dl-menu{
   position:absolute;top:calc(100% + 6px);right:0;z-index:20;
   min-width:210px;padding:6px;
@@ -416,7 +431,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
   .tabs button .i{display:none}
   .file .fico{display:none}
   .dl-menu{min-width:200px}
-  .file .btn .i{display:none}
+  .file .dl-group > .btn:first-child .i{display:none}
 }
 @media (max-width:480px){
   .seg{width:100%}
@@ -549,7 +564,7 @@ footer .visits b{color:var(--ink-2);font-weight:600}
       <div class="files" id="fileList"></div>
 
       <div class="files-foot" id="fileActions" hidden>
-        <div class="dl-group" id="zipGroup">
+        <div class="dl-group" id="zipGroup" role="group" aria-label="ZIP yuklab olish">
           <button type="button" class="btn primary" id="zipBtn">
             <svg class="i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 18v.5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V18"/></svg>
             <span id="zipLabel">Hammasini yuklab olish (.zip)</span>
